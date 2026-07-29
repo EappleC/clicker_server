@@ -12,6 +12,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "socket.io": "^4.8.3"
+    "ws": "^8.18.0"
   }
 }
