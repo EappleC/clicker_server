@@ -2,7 +2,9 @@
 // analagous to "using System;"
 const { Server } = require("socket.io");
 
-const server_listening_port = 3000;
+// process.env.PORT is the cloud provider giving us an assigned port
+// but if there is none, just use port 3000 for local testing
+const server_listening_port = process.env.PORT || 3000;
 
 // create the actual server called "io", tell it to listen on port 3000
 const io = new Server(server_listening_port, {
