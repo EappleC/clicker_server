@@ -1,19 +1,25 @@
-// import Server tool from socket.io package
-// analagous to "using System;"
+// 1. Import Node's built-in HTTP module alongside Socket.IO
+const http = require("http");
 const { Server } = require("socket.io");
 
-// process.env.PORT is the cloud provider giving us an assigned port
-// but if there is none, just use port 3000 for local testing
 const server_listening_port = process.env.PORT || 3000;
 
-// create the actual server called "io", tell it to listen on port 3000
-const io = new Server(server_listening_port, {
-    // CORS is a browser security thing, and setting origin to * means
-    // we are saying ANY webpage on the internet may talk to this server safely
+// 2. Create a standard "Yes Man" HTTP server. 
+// Whenever Render's health check pings it, it instantly replies "200 OK".
+const httpServer = http.createServer((req, res) => {
+    res.writeHead(200);
+    res.end("Server is healthy and running!");
+});
+
+// 3. Attach our Socket.IO server TO the HTTP server
+const io = new Server(httpServer, {
     cors: { origin: "*"}
 });
 
-console.log(`Clicker Server is awake and listening on port ${server_listening_port}`);
+// 4. Make the HTTP server listen, instead of Socket.IO directly
+httpServer.listen(server_listening_port, () => {
+    console.log(`Clicker Server is awake and listening on port ${server_listening_port}`);
+});
 
 let masterNumber = 1000000;
 
